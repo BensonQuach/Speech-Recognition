@@ -1,0 +1,236 @@
+===============================================================================
+ 2.3: Experiments and discussion
+===============================================================================
+
+TABLE OF EXPERIMENTS:  Iterations: 20
+exper.	M    Epsilon  Dimension  Speakers		
+[1.	8     0.001	 14	    30	]	
+[2.	10    0.001	 14	    30	]
+[3.	12    0.001	 14	    30	]
+[4.	14    0.001	 14	    30	]
+[5.	6     0.001	 14	    30	]
+[6.	4     0.001	 14	    30	]
+[7.	8     0.01	 14	    30	]
+[8.	8     0.1	 14	    30	]
+[9.	8     0.0001	 14	    30	]
+[10.	8     1		 14	    30	]
+[11.	8     0.001	 12	    30	]
+[12.	8     0.001	 10	    30	]
+[13.	8     0.001	 8	    30	]
+[14.	8     0.001	 14	    25	]
+[15.	8     0.001	 14	    20	]
+[16.	8     0.001	 14	    15	]
+[17.	8     0.001	 5	    30	]
+[18.	8     0.001	 2	    30	]
+
+-------------------------------------------------------------------------------
+2.3 ACCURACY RESULTS: unk_*.lik   From 1 to 15
+-------------------------------------------------------------------------------
+experiment 1  ---- Accuracy: 15/15
+experiment 2  ---- Accuracy: 15/15
+experiment 3  ---- Accuracy: 15/15
+experiment 4  ---- Accuracy: 15/15
+experiment 5  ---- Accuracy: 15/15
+experiment 6  ---- Accuracy: 15/15
+experiment 7  ---- Accuracy: 15/15
+experiment 8  ---- Accuracy: 15/15
+experiment 9  ---- Accuracy: 15/15
+experiment 10 ---- Accuracy: 15/15
+experiment 11 ---- Accuracy: 15/15
+experiment 12 ---- Accuracy: 15/15
+experiment 13 ---- Accuracy: 14/15
+experiment 14 ---- Accuracy: 13/15
+experiment 15 ---- Accuracy: 9/15
+experiment 16 ---- Accuracy: 6/15
+experiment 17 ---- Accuracy: 9/15
+experiment 18 ---- Accuracy: 7/15
+-------------------------------------------------------------------------------
+
+Note: 
+Changing the number of Gaussians (M) didn't affect the results as shown in the
+experiments since each gaussian essentially holds the information necessary for
+the results independently of each other.
+
+What happens to classification accuracy as the number of components decreases? 
+
+	As the number of components decrease (as tested with dimensions equal to
+	12, 10, 8, 5, 2).  The accuracy follows that it doesn't affect the 
+	classification accuracy significantly unless it falls below a value that is
+	significant to the point where it removes enough information.  In the 
+	experiment above the value where the accuracy begins to fall is 8. We first note that
+	an observation vector of MFCCs consists of cepstral coefficients.  We know
+	that cepstrum produces highly uncorrelated features (thus every dimension is
+	useful). By decreasing the dimension we lose information (cepstral coefficients).
+	However, since each dimension is useful and is virtually uncorrelated from
+	another, losing a few dimensions shouldn't affect the result too much.
+	This is true in our results; 12, 10, 8.  However, once we lose enough
+	information the classification begins to waver as shown in the experiments.
+
+experiment 11 ---- Accuracy: 15/15
+experiment 12 ---- Accuracy: 15/15
+experiment 13 ---- Accuracy: 14/15
+experiment 17 ---- Accuracy: 9/15
+experiment 18 ---- Accuracy: 7/15
+
+What about when the number of possible speakers, S, decreases?
+	
+	As the number of possible speakers decrease (as tested with speakers equal
+	to 25, 20, 15).  The accuracy severely falls since we're removing some of
+	the number of speakers from the field of choices, thus the algorithm will
+	classify that unknown utterance with the best one it can find from the
+	current speakers in the field of choice. 
+
+experiment 14 ---- Accuracy: 13/15
+experiment 15 ---- Accuracy: 9/15
+experiment 16 ---- Accuracy: 6/15
+
+1. How might you improve the classification accuracy of the Gaussian mixtures, 
+without adding more training data?
+
+	I would try to increase the max iterations performed since the algo loops
+	through in an attempt to create improvement in the classifications. And
+	since epsilon and MAX_ITER is the only 2 factors that determines its
+	continuation of improving the classification.  It would make sense to
+	see that classification accuracies could be improved through increasing
+	the number of iterations done by the provided algorithm. 
+
+2. When would your classifier decide that a given test utterance comes from none
+of the trained speaker models, and how would your classifer come to this decision?
+
+	The classifier uses maximum likelihood estimation to decide the speaker
+	calculating the loglikelihood probabilities for each utterance using 
+	each of the speakers, the one with the highest probability will be 
+	chosen. Since we're able to receive the probabilities of each of the 
+	speakers, if we find out that all of their probabilities were 
+	significantly small, then we can deduce	that none of those speakers 
+	had that utterance.
+
+3. Can you think of some alternative methods for doing speaker identifcation 
+that don't use Gaussian mixtures?
+	
+	We could always use other classification algorithms such as,
+	support vector machines, neural networks, dynamic time warping, etc.
+	With some tweaking of course.  But all of them essential takes in
+	a vector of data of some form.
+	
+
+===============================================================================
+ 3.2: Experiments and discussion
+===============================================================================
+
+TABLE OF EXPERIMENTS:  Iterations: 5
+exper.	M  Dimension  Q(States)  Speakers		
+[1.	8     14         3	   20	 ]		
+[2.	10    14         3	   20	 ]		
+[3.	12    14         3	   20	 ]		
+[4.	6     14         3	   20	 ]		
+[5.	8      6         3	   20	 ]	
+[6.	8     12         3	   20	 ]		
+[7.	8     10         3	   20	 ]		
+[8.	8      8         3	   20	 ]		
+[9.	8     14         2	   20	 ]	
+[10.	8     14         4	   20	 ]		
+[11.	8     14         5	   20	 ]		
+[12.	8     14         6	   20	 ]		
+[13.	8     14         3	   10	 ]	
+[14.	8     14         3	   15    ]		
+[15.	8     14         3	   27	 ]	
+[16.	8     14         3	   25	 ]	
+
+-------------------------------------------------------------------------------
+3.2 ACCURACY RESULTS
+-------------------------------------------------------------------------------
+experiment 1  ---- Overall Accuracy: 42.153284671533%
+experiment 2  ---- Overall Accuracy: 36.678832116788%
+experiment 3  ---- Overall Accuracy: 38.321167883212%
+experiment 4  ---- Overall Accuracy: 41.879562043796%
+experiment 5  ---- Overall Accuracy: 35.857664233577%
+experiment 6  ---- Overall Accuracy: 42.427007299270%
+experiment 7  ---- Overall Accuracy: 41.970802919708%
+experiment 8  ---- Overall Accuracy: 39.142335766423%
+experiment 9  ---- Overall Accuracy: 40.510948905109%
+experiment 10 ---- Overall Accuracy: 39.872262773723%
+experiment 11 ---- Overall Accuracy: 35.766423357664%
+experiment 12 ---- Overall Accuracy: 37.956204379562%
+experiment 13 ---- Overall Accuracy: 26.551094890511%
+experiment 14 ---- Overall Accuracy: 35.492700729927%
+experiment 15 ---- Overall Accuracy: 43.248175183482%
+experiment 16 ---- Overall Accuracy: 43.704379562044%
+
+-------------------------------------------------------------------------------
+About the algorithm:
+
+The algorithm of myTrain.m generates a struct containing hidden markov models for
+each phoneme found in the training directory.  These phonemes with its respective
+HMM are used by myRun.m which uses the testing directory containing unkn_*.phn 
+files containing phoneme sequences, to calculate the log likelihood for each 
+respective phoneme in that phoneme sequence, testing it on all the HMMs generated 
+by myTrain.m (the struct of phonemes to HMM).
+
+It then finds the most likely candidate of those phonemes within the struct
+and determines whether that candidate phoneme matched correctly to the actual 
+phoneme within that phn file.
+
+Overall, it measures the proportion of correctly identified phonemes.
+
+-------------------------------------------------------------------------------
+Changing the number of gaussians (M):
+
+In general, from the experiments, changing the number of guassians (M) doesn't
+affect the overall accuracy. 
+
+Thus, the results of having M = 6 (~41.87%), 8 (~42.15%), 10 (~36.67%), 12 (~38.32%), 
+respectively shown with their overall accuracy shows that there doesn't seem to be 
+any change having more or less gaussians.  The argument is similar to 2.3
+where the gaussians are essentially independent of one another.
+
+-------------------------------------------------------------------------------
+Changing the number of dimensions (d):
+
+In general, changing the number of dimensions, specifically decreasing the amount
+does affect the overall accuracy.  This is similar to section 2.3. 
+
+As we can see, the results are linear:
+	d = 12 -> ~42.43%
+	d = 10 -> ~41.97%
+	d = 8  -> ~29.14%
+	d = 6  -> ~35.86%
+
+Thus, the argument is similar to before where although the information (cepstral coeffcients)
+are highly uncorrelated with each other, we are losing information and thus the 
+information that we're using isn't as detailed.  This in turn gives us less 
+accuracy overall.
+
+-------------------------------------------------------------------------------
+Changing the number of states (q):
+
+In general, changing the number of states, doesn't affect the overall 
+accuracy too much.
+
+From the results, we can see that when we took states between values higher or
+lower than 3, there doesn't seem to exist significant change between 
+overall accuracies.
+
+The results emphasize this when we took states of 2 and got approximately 40.51% 
+and states of 4 (~39.87%), 5 (~35.77%), and 6 (~37.96).
+
+Thus, it demonstrates that it fluctuates in the decision of number of states, but there
+aren't any strong implications from the result.
+
+-------------------------------------------------------------------------------
+Changing the number of speakers (N):
+
+If we change the number of speakers then we restrict ourselves from the amount
+of sliced mfcc matrices (by sliced mfcc I'm referring to the indices that are specified
+within the phoneme sequences, used to slice the .mfcc file associated, and thus
+that resulting slice) and possibly phonemes. 
+
+From the results, we can see that when we only took 10 speakers (experiment 13),
+there was a huge decrement in overall accuracy.
+
+Similarily when we took 15 speakers (experiment 14), though not as severe.
+
+As we reached up to taking 27 speakers and 25, we can see that there isn't much
+change in accuracy.
+
+Thus, having less speakers does affect the overall accuracies.
